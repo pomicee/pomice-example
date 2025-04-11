@@ -140,3 +140,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Support
 
 For support, join our [Discord server](https://discord.gg/your-support-server).
+
+## Credits
+
+Created by [@pomice](https://discord.com/users/1252001166703853588)
