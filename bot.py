@@ -13,15 +13,16 @@ class MusicBot(commands.Bot):
         intents.members = True
         
         super().__init__(
-            command_prefix="!",  
+            command_prefix="!",
+            intents=intents,
             activity=discord.Activity(
                 type=discord.ActivityType.listening,
                 name="/play | Music"
             )
         )
         
-        self.mongo_client = MongoClient("")
-        self.db = self.mongo_client['']  
+        self.mongo_client = MongoClient("ENTER YOUR MONGODB URL")
+        self.db = self.mongo_client['ENTER YOUR MONGODB NAME HERE OR JUST ENTER: mongodb']  
 
     async def setup_hook(self):
         for root, dirs, files in os.walk("./cogs"):
@@ -48,7 +49,7 @@ class MusicBot(commands.Bot):
 
 async def main():
     bot = MusicBot()
-    await bot.start("")
+    await bot.start("ENTER YOUR BOT TOKEN.")
 
 if __name__ == "__main__":
     import asyncio
