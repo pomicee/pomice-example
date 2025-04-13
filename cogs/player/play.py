@@ -10,8 +10,8 @@ import re
 from datetime import datetime
 
 # Spotify configuration
-SPOTIFY_CLIENT_ID = "e232813846f0482a902429a9c23117b3"
-SPOTIFY_CLIENT_SECRET = "5620bde526fb457fac7030656a03e1fe"
+SPOTIFY_CLIENT_ID = ""
+SPOTIFY_CLIENT_SECRET = ""
 
 # Initialize Spotify client
 spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
