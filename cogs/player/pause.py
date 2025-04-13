@@ -18,7 +18,14 @@ class Pause(commands.Cog):
                 color=ERROR_COLOR
             ))
             
-        player = ctx.guild.voice_client
+        if not ctx.author.voice:
+            return await ctx.send(embed=discord.Embed(
+                title="Error",
+                description="You must be in a voice channel to use this command!",
+                color=ERROR_COLOR
+            ))
+            
+        player: pomice.Player = ctx.guild.voice_client
         
         if not player:
             return await ctx.send(embed=discord.Embed(
@@ -27,21 +34,21 @@ class Pause(commands.Cog):
                 color=ERROR_COLOR
             ))
             
-        if not player.is_playing():
+        if not player.is_playing:
             return await ctx.send(embed=discord.Embed(
                 title="Error",
                 description="Nothing is playing right now!",
                 color=ERROR_COLOR
             ))
             
-        if player.is_paused():
+        if player.is_paused:
             return await ctx.send(embed=discord.Embed(
                 title="Error",
                 description="The player is already paused!",
                 color=ERROR_COLOR
             ))
 
-        await player.pause()
+        await player.set_pause(True)
         
         if isinstance(ctx, discord.Interaction):
             await ctx.response.send_message(embed=discord.Embed(
@@ -57,4 +64,4 @@ class Pause(commands.Cog):
             ))
 
 async def setup(bot):
-    await bot.add_cog(Pause(bot)) 
+    await bot.add_cog(Pause(bot))
