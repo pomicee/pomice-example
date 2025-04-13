@@ -8,9 +8,9 @@ class Resume(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
-    @commands.hybrid_command(name="resume", description="Resume playback after pausing")
-    async def resume(self, ctx):
-        """Resume playback after pausing"""
+    @commands.hybrid_command(name="resume", description="Resume the current track")
+    async def pause(self, ctx):
+        """Pause the current track"""
         if not ctx.guild:
             return await ctx.send(embed=discord.Embed(
                 title="Error",
@@ -18,7 +18,14 @@ class Resume(commands.Cog):
                 color=ERROR_COLOR
             ))
             
-        player = ctx.guild.voice_client
+        if not ctx.author.voice:
+            return await ctx.send(embed=discord.Embed(
+                title="Error",
+                description="You must be in a voice channel to use this command!",
+                color=ERROR_COLOR
+            ))
+            
+        player: pomice.Player = ctx.guild.voice_client
         
         if not player:
             return await ctx.send(embed=discord.Embed(
@@ -27,20 +34,34 @@ class Resume(commands.Cog):
                 color=ERROR_COLOR
             ))
             
-        if not player.is_paused():
+        if not player.is_playing:
             return await ctx.send(embed=discord.Embed(
                 title="Error",
-                description="The player is not paused!",
+                description="Nothing is playing right now!",
                 color=ERROR_COLOR
             ))
             
-        await player.resume()
+        if player.is_paused:
+            return await ctx.send(embed=discord.Embed(
+                title="Error",
+                description="The player is already resumed!",
+                color=ERROR_COLOR
+            ))
+
+        await player.set_pause(True)
         
-        await ctx.send(embed=discord.Embed(
-            title="Resumed",
-            description="Resumed playback.",
-            color=SUCCESS_COLOR
-        ))
+        if isinstance(ctx, discord.Interaction):
+            await ctx.response.send_message(embed=discord.Embed(
+                title="Paused",
+                description="resumed the current track.",
+                color=SUCCESS_COLOR
+            ))
+        else:
+            await ctx.send(embed=discord.Embed(
+                title="Paused",
+                description="Resumed the current track.",
+                color=SUCCESS_COLOR
+            ))
 
 async def setup(bot):
-    await bot.add_cog(Resume(bot)) 
+    await bot.add_cog(Resume(bot))
